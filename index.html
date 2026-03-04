@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M2oE: Modular Mixture of Experts for Multi-Morphology RL</title>
+  <meta name="description" content="Project page for M2oE: Modular Mixture of Experts for Multi-Morphology Reinforcement Learning of Modular Robots." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="side-menu" aria-label="Section navigation">
+    <a href="#top">Top</a>
+    <a href="#video">Video</a>
+    <a href="#abstract">Abstract</a>
+    <a href="#method">Method</a>
+    <a href="#platform">Platform</a>
+    <a href="#results">Results</a>
+    <a href="#citation">Citation</a>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="container">
+      <h1>M2oE: Modular Mixture of Experts for Multi-Morphology Reinforcement Learning of Modular Robots</h1>
+
+      <p class="authors">
+        Chang Liu<sup>1,2</sup>, Qinchao Xu<sup>1</sup>, Satoshi Yagi<sup>1</sup>, Satoshi Yamamori<sup>1,3</sup>,<br/>
+        Yaonan Zhu<sup>2</sup>, Yusuke Iwasawa<sup>2</sup>, Kazuya Yoshida<sup>4</sup>, Jun Morimoto<sup>1,3</sup>
+      </p>
+      <div class="affiliations">
+        <p><sup>1</sup> Graduate School of Informatics, Kyoto University, Kyoto, Japan</p>
+        <p><sup>2</sup> School of Engineering, The University of Tokyo, Tokyo, Japan</p>
+        <p><sup>3</sup> Dept. of Brain Robot Interface, Computational Neuroscience Labs, ATR, Kyoto, Japan</p>
+        <p><sup>4</sup> Dept. of Aerospace Engineering, Graduate School of Engineering, Tohoku University, Sendai, Japan</p>
+      </div>
+
+      <p class="sponsor">* This work was supported by JST Moonshot R&amp;D (Grant Number: JPMJMS223B-3), and JSPS KAKENHI (Grant Number: 22H04998 and 23K24925).</p>
+
+      <p class="venue">ICRA 2026 (Accepted)</p>
+
+      <div class="links">
+        <a href="#" target="_blank" rel="noopener">📄 Paper (PDF)</a>
+        <a href="#" target="_blank" rel="noopener">💻 Code (Multi-Morphology Extension)</a>
+        <a href="#" target="_blank" rel="noopener">📚 arXiv</a>
+        <a href="#citation">🔖 BibTeX</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="video">
+      <h2>Project Video</h2>
+      <div class="video-wrap">
+        <video controls preload="metadata" poster="assets/figures/moonbot.png">
+          <source src="assets/m2oe.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </section>
+
+    <section id="abstract">
+      <h2>Abstract</h2>
+      <p>
+        Modular robots offer a promising solution for building versatile and adaptable robotic systems.
+        For instance, space exploration robots can be designed to reconfigure to meet diverse task demands across varying environments.
+        However, training such systems by Reinforcement Learning (RL) remains challenging due to the diversity of morphologies and the lack of simulation environments that support simultaneous multi-morphology learning.
+        We present Modular Mixture of Experts (M2oE), a novel reinforcement learning backbone network that imitates the modular structure of robots to enable efficient and module-wise parallelizable policy learning for modular robots.
+        In M2oE, the shared pool of experts, combined with an attention-based gating mechanism that dynamically selects experts based on inter-module correlations, enables both specialization and generalization.
+        This structure supports training across multiple morphologies within a single framework, avoiding gradient conflicts and enhancing experience sharing across modules and morphologies.
+        To support training, we also extend the Isaac Lab simulator with multi-morphology extensions that enable concurrent training across diverse robot configurations.
+        Experiments on a space-exploration-inspired modular robot, Moonbot, demonstrate that M2oE significantly improves learning efficiency and achieves superior performance compared to both MLP and Transformer baselines.
+      </p>
+    </section>
+
+    <section id="method">
+      <h2>Method Overview</h2>
+      <figure>
+        <img src="assets/figures/m2oe.png" alt="M2oE architecture" />
+        <figcaption><strong>Structure of Modular Mixture of Experts (M2oE)</strong>. There are two main components: <strong>a module-wise shared pool of experts</strong> and <strong>an attention-based gating mechanism (M2oE-Gate)</strong> that extract inter-module correlations to select experts for each module. The design of M2oE enables module-wise parallelism and automatic adaptation to morphologies with different numbers of modules. This figure illustrates the action inference process for the first module in a robot with M modules.</figcaption>
+      </figure>
+    </section>
+
+    <section id="platform">
+      <h2>Experiment Platform - Moonbot</h2>
+      <div class="grid-2 platform-grid">
+        <figure>
+          <img src="assets/figures/moonbot.png" alt="Moonbot morphologies" />
+          <figcaption>Three morphologies of the modular robot <a href="https://ieeexplore.ieee.org/abstract/document/11214551" target="_blank" rel="noopener">Moonbot</a>: Minimal (left), Dragon (middle), and Tricycle (right). These diverse configurations pose challenges for reinforcement learning policies to generalize effectively across morphologies.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/figures/multimorphology_extension.png" alt="Multi-morphology extension" />
+          <figcaption>Multi-morphology extension in Isaac Lab for concurrent training across diverse robot configurations.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="results">
+      <h2>Results</h2>
+
+      <div class="tabs" role="tablist" aria-label="Results figures">
+        <button class="tab-btn active" data-tab="tab-quality" role="tab" aria-selected="true">Locomotion Performance</button>
+        <button class="tab-btn" data-tab="tab-learning" role="tab" aria-selected="false">Learning Curves</button>
+        <button class="tab-btn" data-tab="tab-gate" role="tab" aria-selected="false">Gate Heatmap</button>
+        <button class="tab-btn" data-tab="tab-tsne" role="tab" aria-selected="false">t-SNE</button>
+      </div>
+
+      <div class="tab-panels">
+        <figure id="tab-quality" class="tab-panel active" role="tabpanel">
+          <img src="assets/figures/quality.png" alt="Locomotion performance" />
+          <figcaption>Locomotion performance of multiple Moonbot morphologies trained with M2oE and the multi-morphology extension in Isaac Lab. All morphologies are controlled by the same M2oE policy and reliably track target velocity commands while maintaining stability and balance.</figcaption>
+        </figure>
+
+        <figure id="tab-learning" class="tab-panel" role="tabpanel">
+          <img src="assets/figures/learning_curves.png" alt="Learning curves" />
+          <figcaption><strong>Learning Curves</strong> of different methods on the locomotion task across three Moonbot morphologies. We report the average episodic return and the EMA of tracking error (MAE of target linear and angular velocities) during training. Solid lines show the EMA-smoothed (span = 50) mean performance across three seeds, while shaded bands represent the mean ±1 standard deviation. M2oE demonstrates stable and efficient convergence across all morphologies. JointMLP is able to exceed M2oE in linear velocity tracking error on Minimal morphology, but it fails to converge on other morphologies.</figcaption>
+        </figure>
+
+        <figure id="tab-gate" class="tab-panel result-compact" role="tabpanel">
+          <img src="assets/figures/gate_heatmap.png" alt="Gate heatmap" />
+          <figcaption><strong>Heatmap of expert utilization</strong> in M2oE across different morphologies. Each column represents a module, and each row represents an expert. The color intensity indicates the average gating value over test episodes.</figcaption>
+        </figure>
+
+        <figure id="tab-tsne" class="tab-panel result-compact" role="tabpanel">
+          <img src="assets/figures/query_tsne.png" alt="t-SNE query visualization" />
+          <figcaption><strong>t-SNE visualization of gating query features across morphologies.</strong> Each point represents a transformer output feature (query vector) produced by the gating network during forward locomotion at a fixed velocity command. Distinct clusters indicate that the gating network learns morphology- and module-specific representations in the shared embedding space, enabling expert selection across heterogeneous body structures.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="citation">
+      <div class="citation-head">
+        <h2>Citation</h2>
+        <button id="copy-citation" class="copy-btn" type="button">Copy BibTeX</button>
+      </div>
+      <pre><code id="bibtex-block">@inproceedings{liu2026m2oe,
+  title={M2oE: Modular Mixture of Experts for Multi-Morphology Reinforcement Learning of Modular Robots},
+  author={Liu, Chang and Xu, Qinchao and Yagi, Satoshi and Yamamori, Satoshi and Zhu, Yaonan and Iwasawa, Yusuke and Yoshida, Kazuya and Morimoto, Jun},
+  booktitle={IEEE International Conference on Robotics and Automation (ICRA)},
+  year={2026}
+}</code></pre>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-center">
+      <p>© 2026 M2oE Project. Built for GitHub Pages.</p>
+    </div>
+  </footer>
+
+  <script>
+    const buttons = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+
+        buttons.forEach((b) => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        panels.forEach((p) => p.classList.remove('active'));
+        document.getElementById(target).classList.add('active');
+      });
+    });
+
+    const menuLinks = document.querySelectorAll('.side-menu a');
+    const sections = document.querySelectorAll('header[id], section[id]');
+
+    const setActiveMenu = (id) => {
+      menuLinks.forEach((link) => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveMenu(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-35% 0px -55% 0px', threshold: 0 }
+    );
+
+    sections.forEach((sec) => observer.observe(sec));
+
+    const copyBtn = document.getElementById('copy-citation');
+    const bibtexBlock = document.getElementById('bibtex-block');
+
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(bibtexBlock.innerText);
+        const oldText = copyBtn.innerText;
+        copyBtn.innerText = 'Copied!';
+        setTimeout(() => (copyBtn.innerText = oldText), 1400);
+      } catch (err) {
+        copyBtn.innerText = 'Copy failed';
+        setTimeout(() => (copyBtn.innerText = 'Copy BibTeX'), 1400);
+      }
+    });
+  </script>
+</body>
+</html>
