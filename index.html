@@ -126,6 +126,7 @@
       </div>
     </section>
 
+    <!--
     <section id="citation">
       <div class="citation-head">
         <h2>Citation</h2>
@@ -138,6 +139,7 @@
   year={2026}
 }</code></pre>
     </section>
+    -->
   </main>
 
   <footer>
@@ -191,17 +193,19 @@
     const copyBtn = document.getElementById('copy-citation');
     const bibtexBlock = document.getElementById('bibtex-block');
 
-    copyBtn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(bibtexBlock.innerText);
-        const oldText = copyBtn.innerText;
-        copyBtn.innerText = 'Copied!';
-        setTimeout(() => (copyBtn.innerText = oldText), 1400);
-      } catch (err) {
-        copyBtn.innerText = 'Copy failed';
-        setTimeout(() => (copyBtn.innerText = 'Copy BibTeX'), 1400);
-      }
-    });
+    if (copyBtn && bibtexBlock) {
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(bibtexBlock.innerText);
+          const oldText = copyBtn.innerText;
+          copyBtn.innerText = 'Copied!';
+          setTimeout(() => (copyBtn.innerText = oldText), 1400);
+        } catch (err) {
+          copyBtn.innerText = 'Copy failed';
+          setTimeout(() => (copyBtn.innerText = 'Copy BibTeX'), 1400);
+        }
+      });
+    }
   </script>
 </body>
 </html>
